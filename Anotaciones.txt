@@ -1,0 +1,176 @@
+Ayudas:
+man "comando" (ver documentación de un comando)
+info "comando"(más resumida)
+whatis "comando"(todavía más resumida)
+"comando" --help (doble guión para palabra completa)
+
+Comandos Bash:
+ls -l(long) -lr(long reverse) -a(todos, incluye ocultos) -S(size, ord por tamaño) -h(unidades h.)
+tree -L
+mkdir "nombre" (crear directorio/s)
+touch "nombre" (crear archivo/s)
+cp "origen" "destino" (copiar archivo)
+mv (mover archivo)
+rm (borrar archivo) -i(interactivo) -r(recursivo, borra directorio y sus subdirectorios, archivos)
+head (muestra la cabecera del arch de texto, primeras 10 lineas) -n (cantlineas)
+tail (muestra las últimas líneas del arch de teto, ultimas 10 lineas) -n (cantlineas)
+less (muestra archivos de texto) / (busca palabra) q (salir)
+more (muestra archivos de texto)
+xdg-open (abrir archivo con programa predeterminado)
+nautiulus (abrir explorador de arch en linux) / wsl: cmd.exe , explorer.exe "."
+
+Tipos de comandos:
+type "comando" (muestra el tipo de comando)
+Un comando puede ser 4 cosas:
+-Un programa ejecutable. (usr/bin) en Linux
+-Un comando de utilidad de la shell. (Un comando que viene en la Shell)
+-Una función de shell. (Externa a la shell)
+-Un alias. Ej: alias l="ls -lh" (autom. se guardan por sesión)
+
+Wildcards:
+Serie de caracteres especiales que permiten encontrar patrones o hacer busquedas avanzadas.
+ls (wc)
+* (prefijo o sufijo de uno o más caract.) Ej: archivo*  -> archivo.txt
+? (prefijo o sufijo de un caract. por "?") Ej: archivo??? -> archivo123
+Buscar en directorios y arch que empiecen con mayus: ls [[:upper:]]*
+Buscar unicamente las carpetas que empiecen con mayus: ls -d [[:upper:]]*
+Buscar archivos con prefijo o sufijo: ls [ad]*
+
+Redirecciones:
+stdin (teclado o arch de texto) 0 (file descriptor)
+pueden producir:
+stdout 1 (Ej: ls muestra todos los directorios)
+stderror 2 (Ej: ls no encontro el directorio, da error)
+
+Redirigir salida de comando (sólo stdout): (1)>
+Redirigir salida de comando (sólo stderror): 2>
+Redirigir salida de comando (stdout o stderror): ls aosfjhs > salida.txt 2>&1
+Ej: ls Downloads/ > contenidols.txt (Redirige la salida del comando ls a un archivo de texto) (Sobreescribe, crea un arch nuevo.)
+Ej: ls Pictures/ >> contenidols.txt (Concatena con el archivo si ya existe)
+
+echo "salida" (genera stdout)
+cat (concatenar, genera stdout)
+Ej: cat salida.txt salida2.txt > combinados.txt
+Pipe operator | (redirige la salida de un comando como entrada para otro comando)
+Ej: ls -lh | less
+Ej: ls -lh | tee salida.txt | less
+tee (recibe stdin, genera stdout y escribe la misma en un archivo)
+sort (ordena)
+lolcat archivo.txt o "entrada" (genera stdout, texto coloreado)
+cowsay "text" (genera stdout, vaca que habla)
+
+Operadores de control:
+Símbolos reservados para ejecutar más de un comando, o encadenarlos, correrlos síncrona o asíncronamente, usar condicionales.
+
+Síncrona: Uno detras de otro (;)
+Ej: ls; mkdir hola; cal
+cal (muestra un calendario)
+
+Asíncrona: Abre para cada comando una shell en segundo plano, ejecuta los comandos en paralelo (&)
+Ej: ls & date & cal
+
+Condicional: Si un comando se ejecuta sin error, que se ejecute el otro (&&)
+Ej: mkdir test && cd test
+
+Or (||) ejecuta el siguiente comando sin importar si se ejecuto con o sin error. Cuando un comando se ejecuta correctamente, los demas se descartan.
+
+
+Permisos:
+
+Tipos de archivo:
+Atributo:
+- (archivo normal)
+d (directorio)
+l (link simbólico)
+b (archivo de bloque especial, infomacion de disp usb)
+
+Tipo de modo:
+- rwx rwx rwx (representan 0 o 1)
+  111111111
+(t.de arch.) (dueño) (grupo) (world)
+
+Asignar permisos con chmod
+
+Manejo de permisos:
+chmod 755 "archivo o directorio" (cambia el modo de acceso de un archivo o directorio)
+Ej: chmod 755 (en octal) 7--> 111 --> rwx para owner, 5--> 101 --> r-x para group, 5--> 101 --> r-x para world
+Ej: chmod u-x,go=w mitexto.txt
+
+chmod [reference][operator][mode] file...
+reference: u/g/o
+operator: +/-/=
+mode: r/w/x
+
+Crear archivo:
+> archivo.txt
+
+Leer arhivo con cat:
+cat archivo.txt
+
+Modificar archivo con cat:
+cat archivo.txt
+
+Cambiar de usuario:
+whoami (Devuelve el nombre del usuario)
+id (muestra id de usuarios y grupos)
+sudo (invoca comandos como root, no se logea)
+sudo su "root" (cambiar usuario) (acceso a /root)
+sudo su "compaq97" 
+passwd (permite cambiar contraseña de usuario)
+
+Link simbólico:
+(acceso directo a directorio o archivo de la termina que apunta a otro directorio)
+ln -s sandbox Cajadearena
+-Tiene permisos doomie que no tienen valor
+
+Variables de entorno:
+(Configuracion de la shell)
+printenv (muestra todas las variables de entorno)
+
+Mostrar variable de entorno:
+Ej: echo $HOME
+
+Comandos de búsqueda:
+Permiten buscar archivos o directorios con algún criterio.
+
+which: Buscar el binario en todas las rutas de la variable de entorno PATH para encontrar el binario especificado.
+
+which xdg-open
+"/usr/bin/xdg-open"
+
+which cd
+"" no funciona porque cd es una función de la terminal, no un binario.
+
+find: 
+Busca archivos en directorio y subdirectorios.
+
+find ./ -name Pla*
+find ./ -name *zi
+find ./ ?????.txt
+find ./ -type fd -name Documents
+find ./ -type f - name *.log
+find ./ -name *.txt > textos.txt && echo "comando completado"
+
+grep:
+Permite encontrar coincidencias de una busqueda en un archivo de texto.
+
+Ej: grep Towers movies.csv
+-i (no case sensitive)
+-c (contar coincidencias)
+-v (las que no coinciden)
+108583,Fawlty Towers (1975,Comedy,-1980,1,54)
+
+wc archivo:
+-l (cantdad de lineas)
+-w (cantdad de palabras)
+-c (cantdad de bytes)
+
+9126  30006 477779 movies.csv
+(palabras) (letras) (bytes)
+
+Utilidades de red:
+ifconfig (información de red)
+ping (pingea una dirección ip)
+curl (devuelve el contenido html de una pág web)
+wget (descarga una pagina web a un archivo autom, con mejor fomrato)
+traceroute (muestra todas las computadoras que se conectan en el camino a una pagina web)
